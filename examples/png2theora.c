@@ -143,17 +143,22 @@ static void usage(void){
   exit(0);
 }
 
-#ifdef WIN32
+#if defined(WIN32) || defined(__OS2__)
 int
 alphasort (const void *a, const void *b)
 {
   return strcoll ((*(const struct dirent **) a)->d_name,
                   (*(const struct dirent **) b)->d_name);
 }
-
+#ifdef __OS2__
+int
+scandir (const char *dir, struct dirent ***namelist,
+         int (*select)(struct dirent *), int (*compar)(const void *, const void *))
+#else
 int
 scandir (const char *dir, struct dirent ***namelist,
          int (*select)(const struct dirent *), int (*compar)(const void *, const void *))
+#endif
 {
   DIR *d;
   struct dirent *entry;
@@ -462,9 +467,9 @@ png_read(const char *pathname, unsigned int *w, unsigned int *h, unsigned char *
   png_set_strip_alpha(png_ptr);
 
   row_data = (png_bytep)png_malloc(png_ptr,
-    3*height*width*png_sizeof(*row_data));
+    3*height*width*sizeof(*row_data));
   row_pointers = (png_bytep *)png_malloc(png_ptr,
-    height*png_sizeof(*row_pointers));
+    height*sizeof(*row_pointers));
   for(y = 0; y < height; y++) {
     row_pointers[y] = row_data + y*(3*width);
   }
@@ -484,7 +489,11 @@ png_read(const char *pathname, unsigned int *w, unsigned int *h, unsigned char *
   return 0;
 }
 
+#ifdef __OS2__
+static int include_files (struct dirent *de)
+#else
 static int include_files (const struct dirent *de)
+#endif
 {
   char name[1024];
   int number = -1;
