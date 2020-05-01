@@ -228,6 +228,10 @@ if test "x$lt_cv_prog_gnu_ld" = "xyes"; then
     TH_VERSION_ARG='-Wl,--version-script=$(srcdir)/Version_script'
     AC_MSG_RESULT([--version-script])
     ;;
+  *os2*)
+    THEORA_LDFLAGS="$THEORA_LDFLAGS -no-undefined"
+    THENC_VERSION_ARG="$THENC_VERSION_ARG -ltheoradec"
+    ;;
   *)
     # build without versioning
     AC_MSG_RESULT([no])
@@ -240,6 +244,10 @@ else
     THENC_VERSION_ARG='-Wl,-exported_symbols_list,$(srcdir)/theoraenc.exp'
     TH_VERSION_ARG='-Wl,-exported_symbols_list,$(srcdir)/theora.exp'
     AC_MSG_RESULT([-exported_symbols_list])
+    ;;
+  *os2*)
+    THEORA_LDFLAGS="$THEORA_LDFLAGS -no-undefined"
+    THENC_VERSION_ARG="$THENC_VERSION_ARG -ltheoradec"
     ;;
   *)
     # build without versioning
