@@ -487,6 +487,9 @@ int main(int argc,char *const *argv){
      cannot. Don't add any more, you'll probably go to hell if you do. */
   _setmode( _fileno( stdin ), _O_BINARY );
 #endif
+#ifdef __OS2__ /* We need to set stdin/stdout to binary mode. Damn OS/2. */
+  setmode( fileno( stdin ), O_BINARY );
+#endif
 
   /* open the input file if any */
   if(argc==2){

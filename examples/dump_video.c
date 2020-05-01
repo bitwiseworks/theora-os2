@@ -41,7 +41,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 /*Yes, yes, we're going to hell.*/
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__OS2__)
 #include <io.h>
 #endif
 #include <fcntl.h>
@@ -219,6 +219,10 @@ int main(int argc,char *argv[]){
      cannot. Don't add any more, you'll probably go to hell if you do. */
   _setmode( _fileno( stdin ), _O_BINARY );
   _setmode( _fileno( stdout ), _O_BINARY );
+#endif
+#ifdef __OS2__ /* We need to set stdin/stdout to binary mode on os/2. */
+  setmode( fileno( stdin ), O_BINARY );
+  setmode( fileno( stdout ), O_BINARY );
 #endif
 
   /* Process option arguments. */

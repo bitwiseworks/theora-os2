@@ -47,7 +47,7 @@
 #include "vorbis/codec.h"
 #include "vorbis/vorbisenc.h"
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__OS2__)
 /*supply missing headers and functions to Win32. going to hell, I know*/
 #include <fcntl.h>
 #include <io.h>
@@ -1253,6 +1253,12 @@ int main(int argc,char *argv[]){
      cannot. Don't add any more, you'll probably go to hell if you do. */
   _setmode( _fileno( stdin ), _O_BINARY );
   _setmode( _fileno( stdout ), _O_BINARY );
+#endif
+#ifdef __OS2__ /* We need to set stdin/stdout to binary mode. Damn OS/2. */
+  /* if we were reading/writing a file, it would also need to in
+     binary mode, eg, fopen("file.wav","wb"); */
+  setmode( fileno( stdin ), O_BINARY );
+  setmode( fileno( stdout ), O_BINARY );
 #endif
 
   while((c=getopt_long(argc,argv,optstring,options,&long_option_index))!=EOF){
