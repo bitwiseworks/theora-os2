@@ -51,7 +51,8 @@
 /*supply missing headers and functions to Win32. going to hell, I know*/
 #include <fcntl.h>
 #include <io.h>
-
+#endif
+#if defined(_WIN32)
 static double rint(double x)
 {
   if (x < 0.0)
